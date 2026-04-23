@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn Colors</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f8f8f8;
+      color: #222;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 20px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    header h1 { font-size: 1.4rem; font-weight: 700; }
+    header p { font-size: 0.85rem; color: #666; }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: #f0f0f0;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    nav button.active, nav button:hover { background: #222; color: #fff; }
+
+    main { padding: 40px; max-width: 1400px; margin: 0 auto; }
+
+    /* ─── Section ─── */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
+    .section-desc { font-size: 0.82rem; color: #666; margin-bottom: 28px; }
+
+    /* ─── Color Families ─── */
+    .family-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .family-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .swatches {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      width: 80px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .swatch:hover { transform: translateY(-4px); }
+
+    .swatch-color {
+      height: 72px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .swatch-label {
+      margin-top: 5px;
+      font-size: 0.68rem;
+      color: #555;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .swatch-hex {
+      font-size: 0.62rem;
+      color: #999;
+      text-align: center;
+    }
+
+    /* ─── Comparison ─── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .compare-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e8e8e8;
+    }
+
+    .compare-card-title {
+      padding: 14px 16px 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #444;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .compare-row {
+      display: flex;
+      height: 56px;
+    }
+
+    .compare-half {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .compare-half span {
+      font-size: 0.7rem;
+      font-weight: 600;
+      mix-blend-mode: multiply;
+      opacity: 0.7;
+    }
+
+    .compare-half small {
+      font-size: 0.6rem;
+      opacity: 0.55;
+    }
+
+    /* ─── Quiz ─── */
+    .quiz-wrap {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .quiz-question {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid #e8e8e8;
+      text-align: center;
+    }
+
+    .quiz-swatch-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 28px 0;
+    }
+
+    .quiz-swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quiz-color-box {
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      border: 2px solid rgba(0,0,0,0.08);
+    }
+
+    .quiz-label {
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    .quiz-prompt {
+      font-size: 0.95rem;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .quiz-opt {
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: all 0.15s;
+    }
+
+    .quiz-opt:hover { border-color: #aaa; background: #f0f0f0; }
+    .quiz-opt.correct { border-color: #2e9e4f; background: #eafaf0; color: #1a6b35; }
+    .quiz-opt.wrong { border-color: #d94f4f; background: #fdf0f0; color: #922; }
+
+    .quiz-feedback {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      min-height: 20px;
+      color: #555;
+    }
+
+    .quiz-next {
+      margin-top: 20px;
+      padding: 10px 28px;
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    .quiz-score {
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    /* ─── Gradient map ─── */
+    .gradient-section { margin-bottom: 40px; }
+
+    .gradient-bar {
+      height: 60px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .gradient-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: #777;
+    }
+
+    /* ─── Color Blindness ─── */
+    .cb-type-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+
+    .cb-btn {
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 2px solid #e0e0e0;
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 0.78rem;
+      transition: all 0.2s;
+    }
+    .cb-btn:hover { border-color:#aaa; }
+    .cb-btn.active { border-color:#222; background:#222; color:#fff; }
+
+    .cb-panels { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:32px; }
+
+    .cb-panel {
+      flex: 1;
+      min-width: 300px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e8e8e8;
+      overflow: hidden;
+    }
+
+    .cb-panel-head {
+      padding: 12px 16px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cb-panel-head span { font-size:0.7rem; font-weight:400; color:#888; }
+
+    .cb-swatches { padding:16px; display:flex; flex-wrap:wrap; gap:6px; }
+
+    .cb-dot {
+      width: 66px;
+      height: 52px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 5px;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .ishihara-section { margin-top: 36px; }
+    .ishihara-section > h3 { font-size:0.9rem; font-weight:700; margin-bottom:6px; }
+    .ishihara-section > p  { font-size:0.8rem; color:#666; margin-bottom:20px; line-height:1.5; }
+
+    .ishihara-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 20px;
+    }
+
+    .ishihara-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e8e8e8;
+      overflow: hidden;
+    }
+
+    .ishihara-info { padding:12px 14px 14px; }
+    .ishihara-info strong { font-size:0.78rem; display:block; margin-bottom:4px; }
+    .ishihara-info p { font-size:0.7rem; color:#666; line-height:1.5; margin-bottom:8px; }
+
+    .reveal-btn {
+      background: #f5f5f5;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .reveal-btn:hover { background:#e8e8e8; }
+
+    .reveal-answer {
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: #333;
+      background: #f8f8f8;
+      border-radius: 6px;
+      padding: 8px 10px;
+      display: none;
+      line-height: 1.6;
+    }
+
+    /* ─── Intensity Section ─── */
+    .intensity-slider-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e8e8e8;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+
+    .intensity-env-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: #bbb;
+      margin-bottom: 8px;
+    }
+
+    #intensitySlider {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #0a0a1a, #1a3a6b, #4682B4, #87CEEB, #fff7e6, #ffe066);
+      outline: none;
+      cursor: pointer;
+      margin: 6px 0 18px;
+    }
+    #intensitySlider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #222;
+      border: 3px solid #fff;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+
+    .intensity-status { display:flex; align-items:center; gap:12px; }
+    .intensity-icon { font-size:1.6rem; }
+    .intensity-name { font-size:0.95rem; font-weight:700; color:#222; }
+    .intensity-sub  { font-size:0.73rem; color:#777; margin-top:2px; }
+
+    .effect-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .effect-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e8e8e8;
+      overflow: hidden;
+    }
+
+    .effect-header { padding:14px 16px 10px; border-bottom:1px solid #f5f5f5; }
+    .effect-title  { font-size:0.85rem; font-weight:700; color:#222; }
+    .effect-desc   { font-size:0.7rem; color:#888; margin-top:3px; line-height:1.45; }
+    .effect-body   { padding:16px; }
+
+    /* Purkinje bars */
+    .purkinje-colors { display:flex; flex-direction:column; gap:7px; }
+    .purkinje-row    { display:flex; align-items:center; gap:10px; }
+    .purkinje-name   { font-size:0.68rem; color:#666; width:52px; text-align:right; flex-shrink:0; }
+    .purkinje-bar-outer { flex:1; background:#f0f0f0; border-radius:4px; height:24px; overflow:hidden; }
+    .purkinje-bar-fill  {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.35s ease, background-color 0.35s ease, filter 0.35s ease;
+      display: flex; align-items:center; justify-content:flex-end; padding-right:6px;
+    }
+    .purkinje-pct { font-size:0.6rem; color:rgba(255,255,255,0.85); font-weight:700; }
+
+    /* Hunt grid */
+    .hunt-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
+    .hunt-box  {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: background-color 0.35s ease;
+    }
+    .hunt-labels { display:flex; margin-top:6px; }
+    .hunt-label  { font-size:0.58rem; color:#bbb; text-align:center; flex:1; }
+
+    /* Bezold-Brücke */
+    .bezold-rows { display:flex; flex-direction:column; gap:6px; }
+    .bezold-row  { display:flex; align-items:center; gap:10px; }
+    .bezold-name { font-size:0.68rem; color:#666; width:52px; text-align:right; flex-shrink:0; }
+    .bezold-box  {
+      flex: 1;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: background-color 0.35s ease;
+      display: flex; align-items:center; justify-content:center;
+    }
+    .bezold-shift { font-size:0.62rem; color:rgba(255,255,255,0.8); font-weight:700; }
+
+    /* Stevens */
+    .stevens-grid   { display:grid; grid-template-columns:repeat(5,1fr); gap:4px; }
+    .stevens-cell   { aspect-ratio:1; border-radius:4px; transition:background-color 0.35s ease; }
+    .stevens-legend { display:flex; justify-content:space-between; margin-top:6px; font-size:0.62rem; color:#bbb; }
+
+    /* ─── Color info tooltip ─── */
+    #tooltip {
+      position: fixed;
+      background: rgba(0,0,0,0.82);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 999;
+      line-height: 1.6;
+    }
+
+    #tooltip.visible { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Learn Colors</h1>
+    <p>Train your eye to see the tiny differences</p>
+  </div>
+  <nav>
+    <button class="active" data-tab="families">Color Families</button>
+    <button data-tab="compare">Side by Side</button>
+    <button data-tab="gradients">Gradients</button>
+    <button data-tab="quiz">Quiz</button>
+    <button data-tab="blindness">Color Blindness</button>
+    <button data-tab="intensity">Light &amp; Intensity</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ── TAB 1: Families ── -->
+  <section class="section active" id="families">
+    <h2>Color Families</h2>
+    <p class="section-desc">Each row is one color family. Notice how every shade has a slightly different name and feeling — hover any swatch for details.</p>
+    <div class="family-grid" id="familyGrid"></div>
+  </section>
+
+  <!-- ── TAB 2: Compare ── -->
+  <section class="section" id="compare">
+    <h2>Side by Side</h2>
+    <p class="section-desc">Pairs of colors that are often confused. Placed next to each other, the differences become visible.</p>
+    <div class="compare-grid" id="compareGrid"></div>
+  </section>
+
+  <!-- ── TAB 3: Gradients ── -->
+  <section class="section" id="gradients">
+    <h2>Color Gradients</h2>
+    <p class="section-desc">Full spectrum of each hue from light to dark, and also mixing between neighbor colors. Watch the subtle transitions.</p>
+    <div id="gradientContainer"></div>
+  </section>
+
+  <!-- ── TAB 4: Quiz ── -->
+  <section class="section" id="quiz">
+    <h2>Color Quiz</h2>
+    <p class="section-desc">Test yourself — can you name the right shade?</p>
+    <div class="quiz-wrap">
+      <div class="quiz-score" id="quizScore">Score: 0 / 0</div>
+      <div class="quiz-question" id="quizBox"></div>
+    </div>
+  </section>
+
+  <!-- ── TAB 5: Color Blindness ── -->
+  <section class="section" id="blindness">
+    <h2>Color Blindness Simulator</h2>
+    <p class="section-desc">About 8% of men and 0.5% of women have some form of color vision deficiency. Select a type below to simulate how the same colors appear with that condition.</p>
+
+    <div class="cb-type-row" id="cbTypeRow"></div>
+
+    <div class="cb-panels">
+      <div class="cb-panel">
+        <div class="cb-panel-head">Normal Vision <span>Trichromatic — reference</span></div>
+        <div class="cb-swatches" id="cbNormal"></div>
+      </div>
+      <div class="cb-panel">
+        <div class="cb-panel-head" id="cbSimHead">Simulated View <span></span></div>
+        <div class="cb-swatches" id="cbSim"></div>
+      </div>
+    </div>
+
+    <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+      <defs>
+        <filter id="cb-protanopia" color-interpolation-filters="linearRGB">
+          <feColorMatrix type="matrix" values="0.567 0.433 0 0 0  0.558 0.442 0 0 0  0 0.242 0.758 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="cb-deuteranopia" color-interpolation-filters="linearRGB">
+          <feColorMatrix type="matrix" values="0.625 0.375 0 0 0  0.7 0.3 0 0 0  0 0.3 0.7 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="cb-tritanopia" color-interpolation-filters="linearRGB">
+          <feColorMatrix type="matrix" values="0.95 0.05 0 0 0  0 0.433 0.567 0 0  0 0.475 0.525 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="cb-achromatopsia" color-interpolation-filters="linearRGB">
+          <feColorMatrix type="matrix" values="0.213 0.715 0.072 0 0  0.213 0.715 0.072 0 0  0.213 0.715 0.072 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="cb-protanomaly" color-interpolation-filters="linearRGB">
+          <feColorMatrix type="matrix" values="0.817 0.183 0 0 0  0.333 0.667 0 0 0  0 0.125 0.875 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="cb-deuteranomaly" color-interpolation-filters="linearRGB">
+          <feColorMatrix type="matrix" values="0.8 0.2 0 0 0  0.258 0.742 0 0 0  0 0.142 0.858 0 0  0 0 0 1 0"/>
+        </filter>
+      </defs>
+    </svg>
+
+    <div class="ishihara-section">
+      <h3>Ishihara-Style Self Test</h3>
+      <p>These canvas plates hide numbers inside colored dots — the classic Ishihara technique. What you can or can't see reveals your color sensitivity. Each plate uses a specific color confusion pair.</p>
+      <div class="ishihara-grid" id="ishiharaGrid"></div>
+    </div>
+  </section>
+
+  <!-- ── TAB 6: Light & Intensity ── -->
+  <section class="section" id="intensity">
+    <h2>Light Intensity &amp; Color Perception</h2>
+    <p class="section-desc">Your visual system changes dramatically with light levels. Four distinct optical effects are active simultaneously — drag the slider from night to noon to watch them unfold.</p>
+
+    <div class="intensity-slider-card">
+      <div class="intensity-env-label">
+        <span>Night (0%)</span><span>Dusk (25%)</span><span>Daylight (50%)</span><span>Bright (75%)</span><span>Noon Sun (100%)</span>
+      </div>
+      <input type="range" id="intensitySlider" min="0" max="100" value="50" />
+      <div class="intensity-status">
+        <div class="intensity-icon" id="intensityIcon">⛅</div>
+        <div>
+          <div class="intensity-name" id="intensityName">Overcast Day</div>
+          <div class="intensity-sub"  id="intensitySub">Photopic vision: normal cone-based color perception</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="effect-grid">
+      <div class="effect-card">
+        <div class="effect-header">
+          <div class="effect-title">Purkinje Effect</div>
+          <div class="effect-desc">At low light, rod cells dominate — they peak at 507 nm (blue-green). Blues and greens appear relatively brighter while reds fade. Named after Jan Purkyně, 1825.</div>
+        </div>
+        <div class="effect-body"><div class="purkinje-colors" id="purkinjeColors"></div></div>
+      </div>
+
+      <div class="effect-card">
+        <div class="effect-header">
+          <div class="effect-title">Hunt Effect</div>
+          <div class="effect-desc">Colors appear more vivid and saturated at higher luminance. At very dark or very bright extremes, perceived saturation drops — colors look washed out.</div>
+        </div>
+        <div class="effect-body">
+          <div class="hunt-grid"   id="huntGrid"></div>
+          <div class="hunt-labels" id="huntLabels"></div>
+        </div>
+      </div>
+
+      <div class="effect-card">
+        <div class="effect-header">
+          <div class="effect-title">Bezold-Brücke Hue Shift</div>
+          <div class="effect-desc">As luminance rises, hues shift: reds push toward yellow, blues push toward cyan. Two "invariant" hues near cyan (~478 nm) and yellow (~572 nm) stay stable.</div>
+        </div>
+        <div class="effect-body"><div class="bezold-rows" id="bezoldRows"></div></div>
+      </div>
+
+      <div class="effect-card">
+        <div class="effect-header">
+          <div class="effect-title">Stevens Effect</div>
+          <div class="effect-desc">Perceived contrast follows a power law (brightness ≈ L^0.33). In bright light, the difference between dark and light areas feels much more extreme.</div>
+        </div>
+        <div class="effect-body">
+          <div class="stevens-grid"   id="stevensGrid"></div>
+          <div class="stevens-legend"><span>Darker →</span><span>→ Lighter</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="tooltip"></div>
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+
+const families = [
+  {
+    name: "Reds",
+    colors: [
+      { name: "Lavender Blush", hex: "#FFF0F5" },
+      { name: "Misty Rose",     hex: "#FFE4E1" },
+      { name: "Pink",           hex: "#FFC0CB" },
+      { name: "Hot Pink",       hex: "#FF69B4" },
+      { name: "Deep Pink",      hex: "#FF1493" },
+      { name: "Crimson",        hex: "#DC143C" },
+      { name: "Red",            hex: "#FF0000" },
+      { name: "Firebrick",      hex: "#B22222" },
+      { name: "Dark Red",       hex: "#8B0000" },
+      { name: "Maroon",         hex: "#800000" },
+    ]
+  },
+  {
+    name: "Oranges & Yellows",
+    colors: [
+      { name: "Cornsilk",      hex: "#FFF8DC" },
+      { name: "Lemon Chiffon", hex: "#FFFACD" },
+      { name: "Light Yellow",  hex: "#FFFFE0" },
+      { name: "Yellow",        hex: "#FFFF00" },
+      { name: "Gold",          hex: "#FFD700" },
+      { name: "Orange",        hex: "#FFA500" },
+      { name: "Dark Orange",   hex: "#FF8C00" },
+      { name: "Coral",         hex: "#FF7F50" },
+      { name: "Tomato",        hex: "#FF6347" },
+      { name: "OrangeRed",     hex: "#FF4500" },
+    ]
+  },
+  {
+    name: "Greens",
+    colors: [
+      { name: "Honeydew",       hex: "#F0FFF0" },
+      { name: "Mint Cream",     hex: "#F5FFFA" },
+      { name: "Light Green",    hex: "#90EE90" },
+      { name: "Lime",           hex: "#00FF00" },
+      { name: "Lime Green",     hex: "#32CD32" },
+      { name: "Medium Green",   hex: "#00C957" },
+      { name: "Forest Green",   hex: "#228B22" },
+      { name: "Green",          hex: "#008000" },
+      { name: "Dark Green",     hex: "#006400" },
+      { name: "Olive",          hex: "#808000" },
+    ]
+  },
+  {
+    name: "Blues",
+    colors: [
+      { name: "Alice Blue",    hex: "#F0F8FF" },
+      { name: "Light Blue",    hex: "#ADD8E6" },
+      { name: "Sky Blue",      hex: "#87CEEB" },
+      { name: "Deep Sky Blue", hex: "#00BFFF" },
+      { name: "Dodger Blue",   hex: "#1E90FF" },
+      { name: "Cornflower",    hex: "#6495ED" },
+      { name: "Royal Blue",    hex: "#4169E1" },
+      { name: "Blue",          hex: "#0000FF" },
+      { name: "Medium Blue",   hex: "#0000CD" },
+      { name: "Navy",          hex: "#000080" },
+    ]
+  },
+  {
+    name: "Purples & Violets",
+    colors: [
+      { name: "Lavender",      hex: "#E6E6FA" },
+      { name: "Thistle",       hex: "#D8BFD8" },
+      { name: "Plum",          hex: "#DDA0DD" },
+      { name: "Violet",        hex: "#EE82EE" },
+      { name: "Orchid",        hex: "#DA70D6" },
+      { name: "Medium Orchid", hex: "#BA55D3" },
+      { name: "Purple",        hex: "#800080" },
+      { name: "Dark Violet",   hex: "#9400D3" },
+      { name: "Dark Orchid",   hex: "#9932CC" },
+      { name: "Indigo",        hex: "#4B0082" },
+    ]
+  },
+  {
+    name: "Cyans & Teals",
+    colors: [
+      { name: "Azure",        hex: "#F0FFFF" },
+      { name: "Light Cyan",   hex: "#E0FFFF" },
+      { name: "Cyan",         hex: "#00FFFF" },
+      { name: "Aquamarine",   hex: "#7FFFD4" },
+      { name: "Medium Turq.", hex: "#48D1CC" },
+      { name: "Turquoise",    hex: "#40E0D0" },
+      { name: "Light Sea",    hex: "#20B2AA" },
+      { name: "Teal",         hex: "#008080" },
+      { name: "Dark Cyan",    hex: "#008B8B" },
+      { name: "Dark Teal",    hex: "#005F5F" },
+    ]
+  },
+  {
+    name: "Browns & Earthy",
+    colors: [
+      { name: "Linen",        hex: "#FAF0E6" },
+      { name: "Moccasin",     hex: "#FFE4B5" },
+      { name: "Wheat",        hex: "#F5DEB3" },
+      { name: "Tan",          hex: "#D2B48C" },
+      { name: "Burlywood",    hex: "#DEB887" },
+      { name: "Sandy Brown",  hex: "#F4A460" },
+      { name: "Peru",         hex: "#CD853F" },
+      { name: "Chocolate",    hex: "#D2691E" },
+      { name: "Sienna",       hex: "#A0522D" },
+      { name: "Brown",        hex: "#A52A2A" },
+    ]
+  },
+  {
+    name: "Grays & Neutrals",
+    colors: [
+      { name: "White",        hex: "#FFFFFF" },
+      { name: "Snow",         hex: "#FFFAFA" },
+      { name: "Gainsboro",    hex: "#DCDCDC" },
+      { name: "Silver",       hex: "#C0C0C0" },
+      { name: "Light Gray",   hex: "#D3D3D3" },
+      { name: "Dark Gray",    hex: "#A9A9A9" },
+      { name: "Gray",         hex: "#808080" },
+      { name: "Dim Gray",     hex: "#696969" },
+      { name: "Slate Gray",   hex: "#708090" },
+      { name: "Black",        hex: "#000000" },
+    ]
+  },
+];
+
+const confusablePairs = [
+  { title: "Crimson vs Scarlet",      a: { name: "Crimson",    hex: "#DC143C" }, b: { name: "Scarlet",    hex: "#FF2400" } },
+  { title: "Navy vs Midnight Blue",   a: { name: "Navy",       hex: "#000080" }, b: { name: "Midnight",   hex: "#191970" } },
+  { title: "Lime vs Chartreuse",      a: { name: "Lime",       hex: "#00FF00" }, b: { name: "Chartreuse", hex: "#7FFF00" } },
+  { title: "Teal vs Dark Cyan",       a: { name: "Teal",       hex: "#008080" }, b: { name: "Dark Cyan",  hex: "#008B8B" } },
+  { title: "Maroon vs Dark Red",      a: { name: "Maroon",     hex: "#800000" }, b: { name: "Dark Red",   hex: "#8B0000" } },
+  { title: "Purple vs Violet",        a: { name: "Purple",     hex: "#800080" }, b: { name: "Violet",     hex: "#EE82EE" } },
+  { title: "Gold vs Yellow",          a: { name: "Gold",       hex: "#FFD700" }, b: { name: "Yellow",     hex: "#FFFF00" } },
+  { title: "Coral vs Salmon",         a: { name: "Coral",      hex: "#FF7F50" }, b: { name: "Salmon",     hex: "#FA8072" } },
+  { title: "Cyan vs Aqua",            a: { name: "Cyan",       hex: "#00FFFF" }, b: { name: "Aqua",       hex: "#00FFFF" }, note: "Identical! Different names, same hex." },
+  { title: "Sky Blue vs Light Blue",  a: { name: "Sky Blue",   hex: "#87CEEB" }, b: { name: "Light Blue", hex: "#ADD8E6" } },
+  { title: "Indigo vs Dark Violet",   a: { name: "Indigo",     hex: "#4B0082" }, b: { name: "Dark Violet",hex: "#9400D3" } },
+  { title: "Orange vs Dark Orange",   a: { name: "Orange",     hex: "#FFA500" }, b: { name: "Dark Orange",hex: "#FF8C00" } },
+  { title: "Gray vs Silver",          a: { name: "Gray",       hex: "#808080" }, b: { name: "Silver",     hex: "#C0C0C0" } },
+  { title: "Chocolate vs Sienna",     a: { name: "Chocolate",  hex: "#D2691E" }, b: { name: "Sienna",     hex: "#A0522D" } },
+  { title: "Hot Pink vs Deep Pink",   a: { name: "Hot Pink",   hex: "#FF69B4" }, b: { name: "Deep Pink",  hex: "#FF1493" } },
+  { title: "Tomato vs OrangeRed",     a: { name: "Tomato",     hex: "#FF6347" }, b: { name: "OrangeRed",  hex: "#FF4500" } },
+];
+
+const gradients = [
+  { name: "Red spectrum",    from: "#FFE4E1", to: "#8B0000",  steps: ["#FFE4E1","#FFB6C1","#FF6B6B","#FF0000","#CC0000","#8B0000"] },
+  { name: "Blue spectrum",   from: "#E0F0FF", to: "#000080",  steps: ["#E0F0FF","#ADD8E6","#4FC3F7","#1E90FF","#0000FF","#000080"] },
+  { name: "Green spectrum",  from: "#F0FFF0", to: "#006400",  steps: ["#F0FFF0","#90EE90","#3CB371","#228B22","#008000","#006400"] },
+  { name: "Yellow → Orange", from: "#FFFACD", to: "#FF4500",  steps: ["#FFFACD","#FFFF00","#FFD700","#FFA500","#FF6347","#FF4500"] },
+  { name: "Purple spectrum", from: "#E6E6FA", to: "#4B0082",  steps: ["#E6E6FA","#D8BFD8","#EE82EE","#800080","#6A0080","#4B0082"] },
+  { name: "Cyan → Blue",     from: "#E0FFFF", to: "#00008B",  steps: ["#E0FFFF","#00FFFF","#00CED1","#008B8B","#0000CD","#00008B"] },
+  { name: "Pink → Red",      from: "#FFF0F5", to: "#DC143C",  steps: ["#FFF0F5","#FFB6C1","#FF69B4","#FF1493","#FF0055","#DC143C"] },
+  { name: "Warm Neutrals",   from: "#FAF0E6", to: "#A52A2A",  steps: ["#FAF0E6","#F5DEB3","#DEB887","#CD853F","#A0522D","#A52A2A"] },
+];
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return { r, g, b };
+}
+
+function textColor(hex) {
+  const { r, g, b } = hexToRgb(hex);
+  const luminance = (0.299*r + 0.587*g + 0.114*b) / 255;
+  return luminance > 0.5 ? '#222' : '#fff';
+}
+
+// ── Build Families ────────────────────────────────────────────────────────────
+
+const familyGrid = document.getElementById('familyGrid');
+
+families.forEach(fam => {
+  const row = document.createElement('div');
+  row.innerHTML = `<div class="family-name">${fam.name}</div>`;
+  const swatchRow = document.createElement('div');
+  swatchRow.className = 'swatches';
+
+  fam.colors.forEach(c => {
+    const sw = document.createElement('div');
+    sw.className = 'swatch';
+    sw.innerHTML = `
+      <div class="swatch-color" style="background:${c.hex}"></div>
+      <div class="swatch-label">${c.name}</div>
+      <div class="swatch-hex">${c.hex}</div>
+    `;
+    sw.addEventListener('mouseenter', e => showTooltip(e, c));
+    sw.addEventListener('mousemove', e => moveTooltip(e));
+    sw.addEventListener('mouseleave', hideTooltip);
+    swatchRow.appendChild(sw);
+  });
+
+  row.appendChild(swatchRow);
+  familyGrid.appendChild(row);
+});
+
+// ── Build Comparison ─────────────────────────────────────────────────────────
+
+const compareGrid = document.getElementById('compareGrid');
+
+confusablePairs.forEach(pair => {
+  const card = document.createElement('div');
+  card.className = 'compare-card';
+
+  const title = document.createElement('div');
+  title.className = 'compare-card-title';
+  title.textContent = pair.title;
+  if (pair.note) title.textContent += ' — ' + pair.note;
+  card.appendChild(title);
+
+  const row = document.createElement('div');
+  row.className = 'compare-row';
+
+  [pair.a, pair.b].forEach(c => {
+    const half = document.createElement('div');
+    half.className = 'compare-half';
+    half.style.background = c.hex;
+    half.innerHTML = `<span style="color:${textColor(c.hex)}">${c.name}</span><small style="color:${textColor(c.hex)}">${c.hex}</small>`;
+    half.addEventListener('mouseenter', e => showTooltip(e, c));
+    half.addEventListener('mousemove', e => moveTooltip(e));
+    half.addEventListener('mouseleave', hideTooltip);
+    row.appendChild(half);
+  });
+
+  card.appendChild(row);
+  compareGrid.appendChild(card);
+});
+
+// ── Build Gradients ───────────────────────────────────────────────────────────
+
+const gradientContainer = document.getElementById('gradientContainer');
+
+gradients.forEach(g => {
+  const wrap = document.createElement('div');
+  wrap.className = 'gradient-section';
+
+  const bar = document.createElement('div');
+  bar.className = 'gradient-bar';
+  bar.style.background = `linear-gradient(to right, ${g.steps.join(', ')})`;
+
+  const labels = document.createElement('div');
+  labels.className = 'gradient-labels';
+  g.steps.forEach(hex => {
+    const lbl = document.createElement('span');
+    lbl.textContent = hex;
+    labels.appendChild(lbl);
+  });
+
+  const title = document.createElement('div');
+  title.style.cssText = 'font-size:0.8rem;font-weight:600;color:#444;margin-bottom:6px;';
+  title.textContent = g.name;
+
+  wrap.appendChild(title);
+  wrap.appendChild(bar);
+  wrap.appendChild(labels);
+  gradientContainer.appendChild(wrap);
+});
+
+// ── Quiz ──────────────────────────────────────────────────────────────────────
+
+const allColors = families.flatMap(f => f.colors);
+let quizScore = 0, quizTotal = 0;
+
+function buildQuiz() {
+  // Pick a random color
+  const correct = allColors[Math.floor(Math.random() * allColors.length)];
+
+  // Pick 3 distractors from same family
+  const family = families.find(f => f.colors.some(c => c.hex === correct.hex));
+  let pool = family.colors.filter(c => c.hex !== correct.hex);
+  // Shuffle and pick up to 3
+  pool = pool.sort(() => Math.random() - 0.5).slice(0, 3);
+  if (pool.length < 3) {
+    const extras = allColors.filter(c => c.hex !== correct.hex && !pool.includes(c));
+    while (pool.length < 3) pool.push(extras[Math.floor(Math.random() * extras.length)]);
+  }
+
+  const options = [...pool, correct].sort(() => Math.random() - 0.5);
+
+  const box = document.getElementById('quizBox');
+  box.innerHTML = `
+    <p class="quiz-score" id="quizScore">Score: ${quizScore} / ${quizTotal}</p>
+    <p class="quiz-prompt">What is the name of this color?</p>
+    <div class="quiz-swatch-row">
+      <div class="quiz-swatch">
+        <div class="quiz-color-box" style="background:${correct.hex}"></div>
+        <div class="quiz-label">${correct.hex}</div>
+      </div>
+    </div>
+    <div class="quiz-options">
+      ${options.map(o => `<button class="quiz-opt" data-hex="${o.hex}" data-name="${o.name}">${o.name}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <button class="quiz-next" id="quizNext" onclick="buildQuiz()">Next →</button>
+  `;
+
+  box.querySelectorAll('.quiz-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      quizTotal++;
+      const isCorrect = btn.dataset.name === correct.name;
+      if (isCorrect) { quizScore++; btn.classList.add('correct'); }
+      else {
+        btn.classList.add('wrong');
+        box.querySelector(`[data-name="${correct.name}"]`).classList.add('correct');
+      }
+      box.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+      document.getElementById('quizFeedback').textContent = isCorrect
+        ? `✓ Correct! ${correct.name} is ${correct.hex}`
+        : `✗ That was ${correct.name} (${correct.hex})`;
+      document.getElementById('quizNext').style.display = 'inline-block';
+      document.getElementById('quizScore').textContent = `Score: ${quizScore} / ${quizTotal}`;
+    });
+  });
+}
+
+buildQuiz();
+
+// ── Color Blindness ──────────────────────────────────────────────────────────
+
+const cbTypes = [
+  { id: 'normal',        label: 'Normal',        subhead: 'Trichromatic',  desc: 'Normal trichromatic color vision — all three cone types functional.' },
+  { id: 'protanopia',    label: 'Protanopia',     subhead: 'Red-blind',     desc: 'No L-cones (red). ~1% of men. Reds appear dark/brown, green/red confusion.' },
+  { id: 'deuteranopia',  label: 'Deuteranopia',   subhead: 'Green-blind',   desc: 'No M-cones (green). ~1% of men. Most common dichromacy.' },
+  { id: 'tritanopia',    label: 'Tritanopia',     subhead: 'Blue-blind',    desc: 'No S-cones (blue). ~0.01% — equally affects men and women.' },
+  { id: 'achromatopsia', label: 'Achromatopsia',  subhead: 'Monochromacy',  desc: 'No functional cones at all. Sees only grayscale. Extremely rare.' },
+  { id: 'protanomaly',   label: 'Protanomaly',    subhead: 'Weak red',      desc: 'Shifted L-cones (weak red sensitivity). ~1% of men.' },
+  { id: 'deuteranomaly', label: 'Deuteranomaly',  subhead: 'Weak green',    desc: 'Shifted M-cones (weak green sensitivity). ~5% of men — most common form.' },
+];
+
+const cbDemoColors = [
+  { name: 'Red',    hex: '#E03030' }, { name: 'Orange', hex: '#E07030' },
+  { name: 'Yellow', hex: '#D4CC00' }, { name: 'Lime',   hex: '#30C030' },
+  { name: 'Green',  hex: '#1A7A1A' }, { name: 'Teal',   hex: '#009090' },
+  { name: 'Blue',   hex: '#2040D0' }, { name: 'Violet', hex: '#7020B0' },
+  { name: 'Pink',   hex: '#D060A0' }, { name: 'Brown',  hex: '#8B4513' },
+  { name: 'Gray',   hex: '#888888' }, { name: 'Olive',  hex: '#808000' },
+];
+
+let currentCbType = 'protanopia';
+
+// Type buttons
+const cbTypeRow = document.getElementById('cbTypeRow');
+cbTypes.forEach(t => {
+  const btn = document.createElement('button');
+  btn.className = 'cb-btn' + (t.id === currentCbType ? ' active' : '');
+  btn.textContent = t.label;
+  btn.title = t.desc;
+  btn.addEventListener('click', () => {
+    currentCbType = t.id;
+    document.querySelectorAll('.cb-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyCbFilter(t);
+  });
+  cbTypeRow.appendChild(btn);
+});
+
+function buildCbSwatches(containerId) {
+  const container = document.getElementById(containerId);
+  cbDemoColors.forEach(c => {
+    const dot = document.createElement('div');
+    dot.className = 'cb-dot';
+    dot.style.background = c.hex;
+    dot.style.color = textColor(c.hex);
+    dot.textContent = c.name;
+    container.appendChild(dot);
+  });
+}
+
+buildCbSwatches('cbNormal');
+buildCbSwatches('cbSim');
+
+function applyCbFilter(typeObj) {
+  const sim  = document.getElementById('cbSim');
+  const head = document.getElementById('cbSimHead');
+  if (typeObj.id === 'normal') {
+    sim.style.filter = 'none';
+    head.innerHTML = 'Normal Vision <span>Reference</span>';
+  } else {
+    sim.style.filter = `url(#cb-${typeObj.id})`;
+    head.innerHTML = `${typeObj.label} Simulation <span>${typeObj.subhead}</span>`;
+  }
+}
+applyCbFilter(cbTypes.find(t => t.id === currentCbType));
+
+// ── Ishihara-style plates ─────────────────────────────────────────────────────
+
+const ishiharaPlates = [
+  {
+    digit: '6', signalHues: [0, 40], bgHues: [70, 140],
+    title: 'Red-Green Test A',
+    desc: 'Normal vision sees "6". Red-green colorblind people (protanopia/deuteranopia) see only a uniform field — the number vanishes.',
+    answer: 'Normal: "6" | Red-green colorblind: number disappears (dots merge into background)',
+  },
+  {
+    digit: '29', signalHues: [0, 25], bgHues: [55, 120],
+    title: 'Red-Green Test B',
+    desc: 'Normal vision reads "29". People with protanopia or deuteranopia typically see "70" or nothing, as they confuse the reds and greens.',
+    answer: 'Normal: "29" | Red-green colorblind: "70" or unclear',
+  },
+  {
+    digit: '5', signalHues: [200, 255], bgHues: [38, 72],
+    title: 'Blue-Yellow Test',
+    desc: 'Normal and red-green colorblind people see "5". People with tritanopia (blue-blind) cannot distinguish the blue signal from the yellow background.',
+    answer: 'Normal & red-green CB: "5" | Tritanopia (blue-blind): sees nothing',
+  },
+  {
+    digit: '8', signalHues: [260, 310], bgHues: [80, 155],
+    title: 'Protan / Deutan Severity',
+    desc: 'Most people see "8". Those with protanomaly or deuteranomaly (partial deficiency) may struggle — purple tones blend with greens.',
+    answer: 'Normal: "8" | Anomalous trichromats (mild CB): number may be unclear',
+  },
+];
+
+const ishiharaGrid = document.getElementById('ishiharaGrid');
+
+function generateIshihara(canvas, plate) {
+  const SIZE = 260;
+  canvas.width  = SIZE;
+  canvas.height = SIZE;
+  canvas.style.width  = SIZE + 'px';
+  canvas.style.height = SIZE + 'px';
+  const ctx = canvas.getContext('2d');
+  const R   = SIZE / 2 - 5;
+  const cx  = SIZE / 2, cy = SIZE / 2;
+
+  // ── Build a fat digit mask ──────────────────────────────────────────────────
+  // Draw the digit 25 times with small offsets to guarantee thick strokes
+  // that survive any font rendering quirks.
+  const mc   = document.createElement('canvas');
+  mc.width   = SIZE; mc.height = SIZE;
+  const mCtx = mc.getContext('2d');
+  mCtx.fillStyle = 'black';
+  mCtx.fillRect(0, 0, SIZE, SIZE);
+  mCtx.fillStyle = 'white';
+  const fs = plate.digit.length > 1 ? SIZE * 0.50 : SIZE * 0.64;
+  mCtx.font = `bold ${fs}px "Arial Black", Arial, sans-serif`;
+  mCtx.textAlign    = 'center';
+  mCtx.textBaseline = 'middle';
+  // 5×5 offset grid makes strokes ~8px thicker in every direction
+  for (let ox = -3; ox <= 3; ox += 1.5) {
+    for (let oy = -3; oy <= 3; oy += 1.5) {
+      mCtx.fillText(plate.digit, SIZE / 2 + ox, SIZE / 2 + oy);
+    }
+  }
+  const mask = mCtx.getImageData(0, 0, SIZE, SIZE);
+
+  // ── Generate small, tightly packed dots ────────────────────────────────────
+  // Small radius → sharp digit edges; minGap ensures they don't merge visually
+  const dots  = [];
+  const minR  = 3.0;
+  const maxR  = 5.5;
+  const minGap = 0.5;
+
+  for (let i = 0; i < 10000; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const dist  = Math.sqrt(Math.random()) * (R - maxR);
+    const x = cx + dist * Math.cos(angle);
+    const y = cy + dist * Math.sin(angle);
+    const r = minR + Math.random() * (maxR - minR);
+
+    let ok = true;
+    for (const d of dots) {
+      const ddx = d.x - x, ddy = d.y - y;
+      if (ddx * ddx + ddy * ddy < (d.r + r + minGap) ** 2) { ok = false; break; }
+    }
+    if (!ok) continue;
+
+    const px  = Math.round(x), py = Math.round(y);
+    const idx = (py * SIZE + px) * 4;
+    dots.push({ x, y, r, inSignal: mask.data[idx] > 100 });
+  }
+
+  // ── Draw dots ──────────────────────────────────────────────────────────────
+  // Both signal and background share the same lightness range (44–60%)
+  // so the number is distinguishable only by HUE, not brightness — authentic Ishihara.
+  ctx.clearRect(0, 0, SIZE, SIZE);
+  for (const d of dots) {
+    const [lo, hi] = d.inSignal ? plate.signalHues : plate.bgHues;
+    const hue = lo + Math.random() * (hi - lo);
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+    ctx.fillStyle = `hsl(${hue}, ${62 + Math.random() * 22}%, ${44 + Math.random() * 16}%)`;
+    ctx.fill();
+  }
+
+  // ── Clip to circle ─────────────────────────────────────────────────────────
+  ctx.save();
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, 0, Math.PI * 2);
+  ctx.fillStyle = 'black';
+  ctx.fill();
+  ctx.restore();
+}
+
+ishiharaPlates.forEach(plate => {
+  const card   = document.createElement('div');
+  card.className = 'ishihara-card';
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'display:block; margin:14px auto 0;';
+  generateIshihara(canvas, plate);
+
+  const info = document.createElement('div');
+  info.className = 'ishihara-info';
+  info.innerHTML = `
+    <strong>${plate.title}</strong>
+    <p>${plate.desc}</p>
+    <button class="reveal-btn" onclick="this.nextElementSibling.style.display='block';this.style.display='none';">Show Answer</button>
+    <div class="reveal-answer">${plate.answer}</div>
+  `;
+  card.appendChild(canvas);
+  card.appendChild(info);
+  ishiharaGrid.appendChild(card);
+});
+
+// ── Intensity Effects ─────────────────────────────────────────────────────────
+
+const intensityColors = [
+  { name: 'Red',    h:   0, s: 85, l: 45, sw: 0.20 },
+  { name: 'Orange', h:  28, s: 90, l: 50, sw: 0.35 },
+  { name: 'Yellow', h:  57, s: 90, l: 50, sw: 0.65 },
+  { name: 'Green',  h: 120, s: 70, l: 38, sw: 0.90 },
+  { name: 'Cyan',   h: 180, s: 80, l: 42, sw: 0.95 },
+  { name: 'Blue',   h: 235, s: 80, l: 48, sw: 0.80 },
+  { name: 'Purple', h: 275, s: 70, l: 42, sw: 0.40 },
+];
+
+// Bezold-Brücke: hue shift in degrees at maximum intensity (1.0)
+// Positive = shift toward higher hue value
+const bezoldData = [
+  { name: 'Red',    baseH:   0, shift: +12 },
+  { name: 'Orange', baseH:  28, shift:  +8 },
+  { name: 'Yellow', baseH:  57, shift:  +2 },  // near invariant ~572nm
+  { name: 'Green',  baseH: 120, shift:  -8 },
+  { name: 'Cyan',   baseH: 180, shift:   0 },  // near invariant ~478nm
+  { name: 'Blue',   baseH: 235, shift: -12 },
+  { name: 'Purple', baseH: 275, shift: +10 },
+];
+
+const envLevels = [
+  { min: 0,  max: 10,  icon: '🌑', name: 'Near Dark',      sub: 'Scotopic: only rods active, colors invisible' },
+  { min: 10, max: 25,  icon: '🌙', name: 'Night',           sub: 'Scotopic: blue-green appears brightest (Purkinje)' },
+  { min: 25, max: 40,  icon: '🌆', name: 'Dusk / Dawn',     sub: 'Mesopic: rods and cones both active' },
+  { min: 40, max: 60,  icon: '⛅', name: 'Overcast Day',    sub: 'Photopic: normal cone-based color perception' },
+  { min: 60, max: 80,  icon: '☀️', name: 'Bright Daylight', sub: 'High photopic: Hunt effect — colors more vivid' },
+  { min: 80, max: 100, icon: '🔆', name: 'Noon Sun',        sub: 'Very high luminance: Bezold-Brücke hue shifts peak' },
+];
+
+// Build Purkinje rows
+const purkinjeColors = document.getElementById('purkinjeColors');
+intensityColors.forEach(c => {
+  const row = document.createElement('div');
+  row.className = 'purkinje-row';
+  row.innerHTML = `
+    <div class="purkinje-name">${c.name}</div>
+    <div class="purkinje-bar-outer">
+      <div class="purkinje-bar-fill" id="pk-${c.name}" style="background:hsl(${c.h},${c.s}%,${c.l}%);width:80%">
+        <span class="purkinje-pct" id="pk-pct-${c.name}">80%</span>
+      </div>
+    </div>`;
+  purkinjeColors.appendChild(row);
+});
+
+// Build Hunt grid
+const huntGrid   = document.getElementById('huntGrid');
+const huntLabels = document.getElementById('huntLabels');
+intensityColors.forEach(c => {
+  const box = document.createElement('div');
+  box.className = 'hunt-box';
+  box.id = `hunt-${c.name}`;
+  box.style.background = `hsl(${c.h},${c.s}%,${c.l}%)`;
+  huntGrid.appendChild(box);
+
+  const lbl = document.createElement('div');
+  lbl.className = 'hunt-label';
+  lbl.textContent = c.name;
+  huntLabels.appendChild(lbl);
+});
+
+// Build Bezold rows
+const bezoldRows = document.getElementById('bezoldRows');
+bezoldData.forEach(c => {
+  const row = document.createElement('div');
+  row.className = 'bezold-row';
+  row.innerHTML = `
+    <div class="bezold-name">${c.name}</div>
+    <div class="bezold-box" id="bz-${c.name}" style="background:hsl(${c.baseH},80%,48%)">
+      <span class="bezold-shift" id="bz-lbl-${c.name}">0°</span>
+    </div>`;
+  bezoldRows.appendChild(row);
+});
+
+// Build Stevens grid (7 columns × 5 rows = 35 cells from dark to light)
+const stevensGrid = document.getElementById('stevensGrid');
+for (let col = 0; col < 5; col++) {
+  for (let row = 0; row < 7; row++) {
+    const cell = document.createElement('div');
+    cell.className = 'stevens-cell';
+    cell.id = `st-${col}-${row}`;
+    stevensGrid.appendChild(cell);
+  }
+}
+
+function updateIntensity(val) {
+  const level = val / 100;
+  const env   = envLevels.find(e => val >= e.min && val <= e.max) || envLevels[envLevels.length - 1];
+  document.getElementById('intensityIcon').textContent = env.icon;
+  document.getElementById('intensityName').textContent = env.name;
+  document.getElementById('intensitySub').textContent  = env.sub;
+
+  // ── Purkinje ──
+  intensityColors.forEach(c => {
+    const bar = document.getElementById(`pk-${c.name}`);
+    const pct = document.getElementById(`pk-pct-${c.name}`);
+    let perceived;
+    if (level < 0.3) {
+      const blend     = 1 - level / 0.3;
+      const photopic  = 0.45 + (c.l / 100) * 0.5;
+      perceived = photopic * (1 - blend) + c.sw * blend;
+    } else {
+      perceived = 0.45 + (c.l / 100) * 0.5;
+    }
+    const pctVal = Math.round(Math.min(1, perceived) * 100);
+    bar.style.width      = pctVal + '%';
+    bar.style.background = `hsl(${c.h},${c.s}%,${c.l}%)`;
+    bar.style.filter     = level < 0.15
+      ? `saturate(${(level / 0.15) * 0.4}) brightness(0.6)`
+      : level < 0.3
+        ? `saturate(${0.4 + (level - 0.15) / 0.15 * 0.6})`
+        : 'none';
+    pct.textContent = pctVal + '%';
+  });
+
+  // ── Hunt ──
+  intensityColors.forEach(c => {
+    const box = document.getElementById(`hunt-${c.name}`);
+    let satMult, litMult;
+    if (level < 0.15) {
+      satMult = level / 0.15 * 0.25;
+      litMult = 0.3 + level * 2;
+    } else if (level < 0.4) {
+      satMult = 0.25 + (level - 0.15) / 0.25 * 0.75;
+      litMult = 0.6 + (level - 0.15) / 0.25 * 0.25;
+    } else if (level < 0.7) {
+      satMult = 1.0 + (level - 0.4) / 0.3 * 0.3;   // peak saturation — Hunt effect
+      litMult = 0.85 + (level - 0.4) / 0.3 * 0.05;
+    } else {
+      satMult = 1.3 - (level - 0.7) / 0.3 * 0.5;   // wash-out at very high light
+      litMult = 0.9 + (level - 0.7) * 0.3;
+    }
+    const newS = Math.max(2, Math.min(100, c.s * satMult));
+    const newL = Math.max(10, Math.min(90, c.l * litMult));
+    box.style.background = `hsl(${c.h},${newS}%,${newL}%)`;
+  });
+
+  // ── Bezold-Brücke ──
+  const bbHigh = level > 0.5 ? (level - 0.5) / 0.5 : 0;
+  const bbLow  = level < 0.5 ? (0.5 - level) / 0.5 * 0.4 : 0;
+  bezoldData.forEach(c => {
+    const box      = document.getElementById(`bz-${c.name}`);
+    const lbl      = document.getElementById(`bz-lbl-${c.name}`);
+    const hueShift = c.shift * bbHigh - c.shift * 0.3 * bbLow;
+    const newH     = c.baseH + hueShift;
+    const newS     = 70 + bbHigh * 12;
+    const newL     = Math.min(72, 45 + level * 18);
+    box.style.background  = `hsl(${newH},${newS}%,${newL}%)`;
+    const deg = Math.round(hueShift);
+    lbl.textContent = deg === 0 ? 'stable' : (deg > 0 ? `+${deg}°` : `${deg}°`);
+  });
+
+  // ── Stevens ──
+  for (let col = 0; col < 5; col++) {
+    const baseLight    = col / 4;                                 // 0..1 dark to light
+    const contrastGain = 0.55 + Math.pow(level, 0.5) * 1.4;     // power-law gain
+    const stretched    = 0.5 + (baseLight - 0.5) * contrastGain;
+    const finalLight   = Math.max(0.02, Math.min(0.97, stretched));
+    const gv           = Math.round(finalLight * 255);
+    for (let row = 0; row < 7; row++) {
+      const cell = document.getElementById(`st-${col}-${row}`);
+      cell.style.background = `rgb(${gv},${gv},${gv})`;
+    }
+  }
+}
+
+const intensitySlider = document.getElementById('intensitySlider');
+intensitySlider.addEventListener('input', () => updateIntensity(parseInt(intensitySlider.value)));
+updateIntensity(50);
+
+// ── Tooltip ───────────────────────────────────────────────────────────────────
+
+const tooltip = document.getElementById('tooltip');
+
+function showTooltip(e, c) {
+  const { r, g, b } = hexToRgb(c.hex);
+  tooltip.innerHTML = `<strong>${c.name}</strong><br>${c.hex}<br>rgb(${r}, ${g}, ${b})`;
+  tooltip.classList.add('visible');
+  moveTooltip(e);
+}
+
+function moveTooltip(e) {
+  tooltip.style.left = (e.clientX + 14) + 'px';
+  tooltip.style.top  = (e.clientY + 14) + 'px';
+}
+
+function hideTooltip() {
+  tooltip.classList.remove('visible');
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+
+document.querySelectorAll('nav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'quiz') buildQuiz();
+  });
+});
+</script>
+</body>
+</html>
